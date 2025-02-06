@@ -25,6 +25,10 @@ fun main(){
     println(product(5,8))
     printArray(names)
 
+    var numbers = arrayOf(1,2,3,4,5,6,7,8,9,10)
+    isEven(numbers)
+
+
 }
 //función suma 2 números
 fun add():Int{
@@ -42,5 +46,15 @@ fun printArray(names:Array<String>){
     println(names)
     for(name in names){
         println("Hola $name")
+    }
+}
+
+fun isEven(numbers:Array<Int>){
+    for (number in numbers){
+        if(number % 2 == 0){
+            println("the number $number is even")
+        }else{
+            println("the number $number is odd")
+        }
     }
 }
