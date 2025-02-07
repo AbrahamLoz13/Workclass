@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
             WorkclassTheme {
                 Text(text = "Hi Abraham")
                 Text(text = "Welcome to your first program")
+                Text(text = "Holaaa")
                 /*
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
