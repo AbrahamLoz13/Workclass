@@ -3,6 +3,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -11,16 +14,30 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.workclass.ui.theme.WorkclassTheme
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
         setContent {
             WorkclassTheme {
-                Text(text = "Hi Abraham")
-                Text(text = "Welcome to your first program")
-                Text(text = "Holaaa")
+                //Row:fila
+                //Column:Columna
+                Row(){
+                    Column () {
+                        Text(text = "Hi Abraham")
+                        Text(text = "Welcome to your first program")
+                    }
+                    Column () {
+
+                        Text(text = "Hi Abraham")
+                        Text(text = "Welcome to your first program")
+                    }
+                    Column () {
+                        Text(text = "Hi Abraham")
+                        Text(text = "Welcome to your first program")
+                    }
+                }
+
                 /*
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
@@ -42,7 +59,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
