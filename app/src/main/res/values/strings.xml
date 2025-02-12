@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Workclass</string>
+    <string name="simple_text">Hello word\n</string>
 </resources>
