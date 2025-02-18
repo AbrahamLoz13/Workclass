@@ -148,7 +148,7 @@ Icon(
 )
         Text(
             stringResource(R.string.app_name),
-            color = Color.White,
+            color = Color.Black,
             fontSize = 30.sp
         )
     }
