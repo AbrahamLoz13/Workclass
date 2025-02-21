@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-
 @Composable
 fun MainMenuScreen(navController: NavHostController){
     Column(modifier = Modifier
@@ -24,6 +23,10 @@ fun MainMenuScreen(navController: NavHostController){
         Button(onClick = {navController.navigate("Test_Screen")}
         ) {
             Text("GO TO TEST SCREEN")
+        }
+        Button(onClick = {navController.navigate("Instagram_Screen")}
+        ) {
+            Text("GO TO INSTAGRAM CLONE")
         }
     }
 }
