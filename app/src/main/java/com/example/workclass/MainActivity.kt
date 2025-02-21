@@ -50,179 +50,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             WorkclassTheme {
                 ComposeMultiScreenApp()
-                // Se organiza la UI en Columnas y Filas
-                /*  Column {
-                      Column {
-                          // Se llaman a composables para mostrar texto
-                          TextComposable("Roberto")
-                          TextComposable("Pepe")
-                          TextComposable("Lopez")
-                          TextComposable("Juanito")
-                      }
-                      Row {
-                          TextComposable()
-                          TextComposable()
-                          TextComposable()
-                          TextComposable()
-                      }
-                      Column {
-                          ModifierExample2()
-                          ModifierExample4()
-                          CustomText()
-                          Picture()
-                      }
-                  }
-
             }
         }
     }
-
-    // Composable que muestra un texto, con un nombre por defecto
-    @Preview(showBackground = true)
-    @Composable
-    fun TextComposable(name: String = "Empty") {
-        Text("Welcome")
-        Text(name)
-    }
-
-    // Preview es para mostrar la función sin correr la app
-    @Preview(showBackground = true)
-    @Composable
-    fun ModifierExample1() {
-        // Función que aplica un padding a un texto
-        Column(modifier = Modifier.padding(35.dp, 24.dp, 10.dp, 15.dp)) {
-            Text("Hello word")
-        }
-    }
-
-    @Preview
-    @Composable
-    fun ModifierExample2() {
-        // Función que añade padding, ocupa el ancho máximo, permite clics y cambia el fondo
-        Column(
-            modifier = Modifier
-                .padding(24.dp)
-                .fillMaxWidth()
-                .clickable(onClick = { clickAction() })
-
-        ) {
-            Text(text = "Hello word")
-        }
-    }
-
-    // Función que se ejecuta al hacer clic
-    fun clickAction() {
-        println(":) onClick")
-    }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun ModifierExample3() {
-        // Función que crea una columna con altura completa, padding, fondo, borde y alineaciones
-        Column(
-            modifier = Modifier
-                .background(Color.Cyan)
-                .fillMaxHeight()
-                .padding(25.dp)
-                .border(width = 2.dp, color = Color.Black)
-                .width(200.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
-        ) {
-            TextComposable("1")
-            TextComposable("2")
-            TextComposable("3")
-
-            TextComposable("4")
-        }
-    }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun ModifierExample4() {
-        //dos maneras de acceder a los modifiers
-        //1,. con una variable, 2.-  con modifier.propiedad
-        Box(
-            modifier = Modifier
-                .background(Color.Cyan)
-                .padding(10.dp)
-                .width(300.dp)
-                .height(300.dp)
-        ) {
-            Text("1", Modifier.align(Alignment.TopStart))
-            Text("2", Modifier.align(Alignment.TopCenter))
-            Text("3", Modifier.align(Alignment.TopEnd))
-            Text("4", Modifier.align(Alignment.CenterStart))
-            Text("5", Modifier.align(Alignment.Center))
-            Text("6", Modifier.align(Alignment.CenterEnd))
-            Text("7", Modifier.align(Alignment.BottomStart))
-            Text("8", Modifier.align(Alignment.BottomCenter))
-            Text("9", Modifier.align(Alignment.BottomEnd))
-        }
-    }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun CustomText() {
-        Column() {
-            Text(
-                stringResource(R.string.app_name),
-                color = colorResource(R.color.purple_500),
-                fontSize = 20.sp,
-                fontStyle = FontStyle.Italic,
-                fontWeight = FontWeight.ExtraBold
-            )
-            val gradientColors =
-                listOf(Color.Gray, Color.Magenta, colorResource(R.color.purple_200))
-            Text(
-                stringResource(R.string.app_name),
-                style = TextStyle(brush = Brush.linearGradient(colors = gradientColors))
-            )
-        }
-    }
-
-    @Preview
-    @Composable
-    fun picture() {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(Color.Black)
-                .height(300.dp)
-        ) {
-            Image(
-                painter = painterResource(R.drawable.amogus), // ✅ Corrección aquí
-                contentDescription = "Gatitos Bonitos",
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Fit
-            )
-
-                 */
-            }
-
-
-        }
-    }
-
-
     @Composable
     fun ComposeMultiScreenApp() {
         val navController = rememberNavController()
         SetUpNavGraph(navController = navController)
     }
-
     @Composable
     fun SetUpNavGraph(navController: NavHostController) {
         NavHost(
             navController = navController,
-            startDestination = "MainMenu_Screen" // ✅ Corrección aquí
+            startDestination = "MainMenu_Screen"
         ) {
             composable("MainMenu_Screen") { MainMenuScreen(navController) }
             composable("Home_Screen") { HomeScreen(navController) }
             composable("Test_Screen") { TestScreen(navController) }
-
-
+            composable("Instagram_Screen") { com.example.workclass.ui.screens.InstagramHome(navController) }
         }
     }
 }
-
