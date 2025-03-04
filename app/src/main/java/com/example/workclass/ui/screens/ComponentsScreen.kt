@@ -1,0 +1,389 @@
+package com.example.workclass.ui.screens
+
+import android.widget.Switch
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.InputChipDefaults
+import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderPositions
+import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import kotlinx.coroutines.launch
+import org.w3c.dom.Text
+@Composable
+fun ComponentsScreen(navController: NavHostController){
+
+    //Buttons() // Function to display different types of buttons
+    //FloatingButtons() // Function to display floating action buttons
+    //Progress() // Function to show progress indicators
+    //Chips() // Function to display chip components
+    //Sliders() // Function to display sliders
+    //Switches() // Function to display switches and checkboxes
+    //Badges()
+    //SnackBars()
+    AlertDialogs()
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Buttons(){
+    // This function displays various types of Material Design buttons.
+    // Esta función muestra varios tipos de botones de Material Design.
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        Button(onClick = {}){ // Standard filled button
+            Text("Filled") // Botón estándar relleno
+        }
+        FilledTonalButton(onClick = {}){ // Button with a tonal fill
+            Text("Tonal") // Botón con relleno tonal
+        }
+        OutlinedButton (onClick = {}){ // Button with an outline border
+            Text("Outlined") // Botón con borde contorneado
+        }
+        ElevatedButton(onClick = {}){ // Button with an elevation effect
+            Text("Elevated") // Botón con efecto de elevación
+        }
+        TextButton(onClick = {}){ // Button with just text (no border or fill)
+            Text("Text") // Botón solo con texto (sin borde ni relleno)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun FloatingButtons() {
+    // This function displays different types of floating action buttons.
+    // Esta función muestra diferentes tipos de botones flotantes de acción.
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        FloatingActionButton(onClick = {}) { // Standard floating action button
+            Icon(Icons.Filled.Add,"Add button") // Ícono de añadir en el botón flotante estándar
+        }
+        SmallFloatingActionButton(onClick = {}) { // Smaller floating action button
+            Icon(Icons.Filled.Add,"Add button") // Ícono de añadir en el botón flotante pequeño
+        }
+        LargeFloatingActionButton(onClick = {}) { // Larger floating action button
+            Icon(Icons.Filled.Add,"Add button") // Ícono de añadir en el botón flotante grande
+        }
+        ExtendedFloatingActionButton(onClick = {}) { // Extended floating action button with icon
+            Icon(Icons.Filled.Add,"Add button") // Ícono de añadir en el botón flotante extendido
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Progress() {
+    // This function displays progress indicators.
+    // Esta función muestra indicadores de progreso.
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        LinearProgressIndicator(
+            modifier = Modifier.fillMaxWidth() // Full-width linear progress indicator
+        ) // Indicador de progreso lineal de ancho completo
+        CircularProgressIndicator(
+            modifier = Modifier.width(64.dp) // Circular progress indicator with specified width
+        ) // Indicador de progreso circular con ancho especificado
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Chips() {
+    // This function displays different types of chip components.
+    // Esta función muestra diferentes tipos de chips.
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        AssistChip(
+            onClick = {},
+            label = { Text("Assist Chip") },
+            leadingIcon = {
+                Icon(Icons.Filled.AccountBox,
+                    contentDescription = "Assist Chip",
+                    modifier = Modifier.size(AssistChipDefaults.IconSize)
+                )
+            }
+        )
+        var selected by remember { mutableStateOf(false) }
+        FilterChip(
+            selected = selected,
+            onClick = {selected = !selected},
+            label = { Text("Filter Chip") },
+            leadingIcon = if (selected){
+                {
+                    Icon(Icons.Filled.AccountBox,
+                        contentDescription = "Assist chip",
+                        modifier = Modifier.size(AssistChipDefaults.IconSize)
+                    )
+                }
+            }else{
+                null
+            }
+        )
+        InputChipExample("Dismiss",{}) // Example of an input chip
+    }
+}
+
+@Composable
+fun InputChipExample(
+    text: String,
+    onDismiss: ()-> Unit
+){
+    // This function defines an input chip with a dismiss action.
+    // Esta función define un chip de entrada con una acción de eliminación.
+
+    var enabled by remember { mutableStateOf(true) }
+    if (!enabled) return
+
+    InputChip(
+        label = { Text(text)},
+        selected = enabled,
+        onClick = {
+            onDismiss()
+            enabled = !enabled
+        },
+        avatar = {
+            Icon(Icons.Filled.Person, contentDescription = "Icon Person",
+                Modifier.size(InputChipDefaults.AvatarSize)
+            )
+        },
+        trailingIcon = {
+            Icon(Icons.Filled.Close, contentDescription = "Close Icon",
+                Modifier.size(InputChipDefaults.AvatarSize)
+            )
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Sliders(){
+    // This function displays a slider for selecting a value.
+    // Esta función muestra un control deslizante para seleccionar un valor.
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ) {
+        var SliderPosition by remember { mutableStateOf(50f) }
+        Slider(
+            value = SliderPosition,
+            onValueChange = {SliderPosition = it},
+            steps = 10,
+            valueRange = 0f .. 100f
+        )
+        Text(
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+            text = SliderPosition.toString()
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun Switches(){
+    // This function displays switches and checkboxes.
+    // Esta función muestra interruptores y casillas de verificación.
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+    ){
+        var checked by remember { mutableStateOf(true)}
+        Switch(
+            checked = checked,
+            onCheckedChange = {checked = it}
+        )
+        var checked2 by remember { mutableStateOf(true) }
+        Switch(
+            checked = checked2,
+            onCheckedChange = {checked2 = it},
+            thumbContent = if(checked2){
+                {
+                    Icon(Icons.Filled.Check,
+                        contentDescription = "Switch check",
+                        Modifier.size(InputChipDefaults.AvatarSize)
+                    )
+                }
+            } else null
+        )
+        var checked3 by remember { mutableStateOf(true) }
+        Checkbox(
+            checked = checked3,
+            onCheckedChange = {checked3 = it}
+        )
+    }
+}
+//@Preview(showBackground = true)
+@Composable
+fun Badges() {
+    // This function displays Badges.
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+var itemCount by remember { mutableStateOf(0) }
+        BadgedBox(
+            badge = {
+                if(itemCount>0){
+                    Badge(
+                        contentColor = Color.White,
+                        containerColor = Color.Red
+                    ){
+                            Text(itemCount.toString())
+                    }
+                }
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ShoppingCart,
+                contentDescription = "shopping car icon"
+            )
+        }
+        Button(onClick = {itemCount++}) {
+            Text("Add item")
+        }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun SnackBars() {
+    // This function displays SnackBars.
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+      val snackState = remember { SnackbarHostState() }
+        val snackScope = rememberCoroutineScope()
+SnackbarHost(hostState = snackState)
+    fun launchSnackBar(){
+snackScope.launch { snackState.showSnackbar("The message has been send") }
+     }
+        Button(::launchSnackBar) {
+            Text("Send message")
+        }
+    }
+    }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AlertDialogs() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween
+
+    ){
+        var showAlertDialog by remember { mutableStateOf(false) }
+        var selectedOption by remember { mutableStateOf("") }
+
+        if(showAlertDialog){
+            AlertDialog(
+                icon = { Icon(Icons.Filled.Warning, contentDescription = "Icon Warning") },
+                title = { Text(text= "Confirm Deletion") },
+                text = { Text(text = "Are u sure u want delete this file") },
+
+                onDismissRequest = {},
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            selectedOption = "Confirm"
+                            showAlertDialog = false
+                        }
+                    ) {
+                        Text(text = "Yes")
+                    }
+                },
+                dismissButton =  {
+                    TextButton(
+                        onClick = {
+                            selectedOption = "Cancelado"
+                            showAlertDialog = false
+                        }
+                    ) {
+                        Text(text = "No")
+                    }
+                }
+
+            )
+        }
+        Button(onClick ={showAlertDialog= true}){
+            Text(text = "Borrar Archivo")
+        }
+        Text(selectedOption)
+    }
+
+
+
+}

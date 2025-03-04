@@ -37,7 +37,6 @@ fun DarkTheme(content: @Composable () -> Unit) {
 }
 
 data class User(val name: String, val profilePic: Int, val postImage: Int)
-
 val users = listOf(
     User("AbrahamLozano", R.drawable.img, R.drawable.tamales),
     User("Mabel_Ruiz", R.drawable.foto, R.drawable.semestre),
