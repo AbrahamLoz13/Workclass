@@ -1,10 +1,10 @@
 package com.example.workclass.ui.screens
-
 import android.widget.Switch
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
@@ -23,17 +24,22 @@ import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderPositions
@@ -43,11 +49,13 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,7 +68,6 @@ import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 @Composable
 fun ComponentsScreen(navController: NavHostController){
-
     //Buttons() // Function to display different types of buttons
     //FloatingButtons() // Function to display floating action buttons
     //Progress() // Function to show progress indicators
@@ -69,7 +76,169 @@ fun ComponentsScreen(navController: NavHostController){
     //Switches() // Function to display switches and checkboxes
     //Badges()
     //SnackBars()
-    AlertDialogs()
+    //AlertDialogs()
+    var option by rememberSaveable{ mutableStateOf("")}
+    var drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    var scope = rememberCoroutineScope()
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet {
+                Text("Menú", modifier = Modifier.padding(16.dp))
+                HorizontalDivider()
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("First menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "Buttons"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.Notifications, contentDescription = "item") },
+                    label = { Text("Second menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "FloatingButtons"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("Tercer menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "Progress"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("Fourth menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "Chips"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("Five menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "Sliders"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("Sixth menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "Switches"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("Seventh menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "Badges"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("Eight menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "SnackBars"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+                NavigationDrawerItem(
+                    icon = { Icon(Icons.Filled.ShoppingCart, contentDescription = "item") },
+                    label = { Text("Nine menú item") },
+                    selected = false,
+                    onClick = {
+                        option = "AlertDialogs"
+                        scope.launch {
+                            drawerState.apply {
+                                close()
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    ) {
+       Column {
+           when(option){
+               "Buttons"->{
+                   Buttons()
+               }
+               "FloatingButtons"->{
+                   FloatingButtons()
+               }
+               "Progress"->{
+                   Progress()
+               }
+               "Chips"->{
+                  Chips()
+               }
+               "Sliders"->{
+                 Sliders()
+               }
+               "Switches"->{
+                Switches()
+               }
+               "Badges"->{
+                   Badges()
+               }
+               "SnackBars"->{
+                   SnackBars()
+               }
+               "AlertDialogs"->{
+                   AlertDialogs()
+               }
+
+           }
+       }
+    }
 }
 
 @Preview(showBackground = true)
