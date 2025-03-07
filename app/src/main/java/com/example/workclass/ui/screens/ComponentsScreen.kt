@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -21,6 +22,8 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
@@ -28,6 +31,7 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
@@ -40,6 +44,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.LargeFloatingActionButton
@@ -56,6 +61,9 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -67,11 +75,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.workclass.R
 import com.example.workclass.data_model.MenuModel
+import com.example.workclass.data_model.PostCardModel
+import com.example.workclass.ui.components.PostCardComponent
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 @Composable
@@ -86,6 +98,7 @@ val menuOption = arrayOf(
     MenuModel(7,"Badges","Badges", Icons.Filled.PlayArrow),
     MenuModel(8,"SnackBars","SnackBars", Icons.Filled.AddCircle),
     MenuModel(9,"AlertDialogs","AlertDialogs", Icons.Filled.Warning),
+    MenuModel(9,"Bars","Bars", Icons.Filled.Warning),
 
 )
     var option by rememberSaveable{ mutableStateOf("")}
@@ -146,6 +159,9 @@ val menuOption = arrayOf(
                }
                "AlertDialogs"->{
                    AlertDialogs()
+               }
+               "Bars"->{
+                   Bars()
                }
 
            }
@@ -464,3 +480,68 @@ fun AlertDialogs() {
         Text(selectedOption)
     }
 }
+@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Bars(){
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        TopAppBar(
+            colors = TopAppBarDefaults.topAppBarColors(titleContentColor = Color.White,
+                containerColor = Color.Black),
+            title = { Text("Screen title") },
+            actions = {
+                IconButton(onClick = {}) {
+                    Icon(imageVector = Icons.Filled.Search, contentDescription="")
+                }
+                IconButton(onClick = {}) {
+                    Icon(imageVector = Icons.Filled.Settings, contentDescription="")
+                }
+            }
+
+        )
+        val arrayPosts = arrayOf(
+            PostCardModel(1,"t","t", R.drawable.amogus),
+            PostCardModel(2,"t","t3", R.drawable.amogus),
+            PostCardModel(3,"t","t33", R.drawable.amogus),
+            PostCardModel(4,"t","t33", R.drawable.amogus),
+            PostCardModel(5,"t","t33", R.drawable.amogus),
+            PostCardModel(6,"t","t33", R.drawable.amogus),
+        )
+        LazyRow(modifier = Modifier.fillMaxSize().weight(1f)
+        ) { items(arrayPosts){item -> PostCardComponent(item.id,item.title,item.text,item.image) } }
+            BottomAppBar(
+                containerColor = Color.DarkGray,
+                contentColor = Color.White
+            ) {
+                IconButton(modifier = Modifier.weight(1f),
+                    onClick = {},
+                    )
+                {
+                    Icon(imageVector = Icons.Filled.Warning, contentDescription = "")
+                }
+                IconButton(modifier = Modifier.weight(1f),onClick = {},
+                )
+                {
+                    Icon(imageVector = Icons.Filled.Warning, contentDescription = "")
+                }
+                IconButton(modifier = Modifier.weight(1f),onClick = {},
+                )
+                {
+                    Icon(imageVector = Icons.Filled.Warning, contentDescription = "")
+                }
+                IconButton(modifier = Modifier.weight(1f),onClick = {},
+                )
+                {
+                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Warning, contentDescription = "")
+                }
+                IconButton(onClick = {},
+                )
+                {
+                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Warning, contentDescription = "")
+                }
+            }
+        }
+    }
+
