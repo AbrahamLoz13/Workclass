@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -19,6 +21,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
@@ -64,6 +67,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -88,6 +92,7 @@ import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 @Composable
 fun ComponentsScreen(navController: NavHostController){
+
 val menuOption = arrayOf(
     MenuModel(1,"Buttons","Buttons", Icons.Filled.ShoppingCart),
     MenuModel(2,"Floating buttons","FloatingButtons", Icons.Filled.Build),
@@ -486,7 +491,8 @@ fun AlertDialogs() {
 fun Bars(){
     Column(
         modifier = Modifier.fillMaxSize()
-    ) {
+    )
+    {
         TopAppBar(
             colors = TopAppBarDefaults.topAppBarColors(titleContentColor = Color.White,
                 containerColor = Color.Black),
@@ -501,6 +507,7 @@ fun Bars(){
             }
 
         )
+        /*
         val arrayPosts = arrayOf(
             PostCardModel(1,"t","t", R.drawable.amogus),
             PostCardModel(2,"t","t3", R.drawable.amogus),
@@ -509,9 +516,20 @@ fun Bars(){
             PostCardModel(5,"t","t33", R.drawable.amogus),
             PostCardModel(6,"t","t33", R.drawable.amogus),
         )
-        LazyRow(modifier = Modifier.fillMaxSize().weight(1f)
+
+        LazyRow(
+            modifier = Modifier.fillMaxSize().weight(1f)
         ) { items(arrayPosts){item -> PostCardComponent(item.id,item.title,item.text,item.image) } }
-            BottomAppBar(
+           */
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxSize()
+        ) {
+
+        }
+
+        BottomAppBar(
                 containerColor = Color.DarkGray,
                 contentColor = Color.White
             ) {
@@ -524,24 +542,46 @@ fun Bars(){
                 IconButton(modifier = Modifier.weight(1f),onClick = {},
                 )
                 {
-                    Icon(imageVector = Icons.Filled.Warning, contentDescription = "")
+                    Icon(imageVector = Icons.Filled.Settings, contentDescription = "")
                 }
                 IconButton(modifier = Modifier.weight(1f),onClick = {},
                 )
                 {
-                    Icon(imageVector = Icons.Filled.Warning, contentDescription = "")
+                    Icon(imageVector = Icons.Filled.Home, contentDescription = "")
                 }
                 IconButton(modifier = Modifier.weight(1f),onClick = {},
                 )
                 {
-                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Warning, contentDescription = "")
+                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Person, contentDescription = "")
                 }
                 IconButton(onClick = {},
                 )
                 {
-                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Warning, contentDescription = "")
+                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Create, contentDescription = "")
                 }
             }
         }
     }
+@Composable
+fun Adaptive(){
+    var windowsSize =currentWindowAdaptiveInfo().windowSizeClass
+    var height = currentWindowAdaptiveInfo().windowSizeClass.windowHeightSizeClass
+    var width = currentWindowAdaptiveInfo().windowSizeClass.windowWidthSizeClass
+    //Compact Width < 600 dp Phone Portrait
+    //Medium Width >= 600 dp <840 dp Tablet Portrait
+    //Expanded Width >= 840 dp Tablet Landscape
+
+    //Compact Height < 480 dp phone landscape
+    //Medium Height >= 480 dp <900 dp tablet landscape or phone portrait
+    //Expanded Height >= 900 dp tablet portrait
+
+    Column {
+     Text(windowsSize.toString())
+     Text(height.toString())
+     Text(width.toString())
+}
+}
+
+
+
 
