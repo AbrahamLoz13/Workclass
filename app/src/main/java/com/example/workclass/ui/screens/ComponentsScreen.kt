@@ -84,9 +84,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.window.core.layout.WindowHeightSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass
 import com.example.workclass.R
 import com.example.workclass.data_model.MenuModel
 import com.example.workclass.data_model.PostCardModel
+import com.example.workclass.ui.components.PostCardCompactComponent
 import com.example.workclass.ui.components.PostCardComponent
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
@@ -526,7 +529,7 @@ fun Bars(){
                 .weight(1f)
                 .fillMaxSize()
         ) {
-
+      Adaptive()
         }
 
         BottomAppBar(
@@ -575,12 +578,38 @@ fun Adaptive(){
     //Medium Height >= 480 dp <900 dp tablet landscape or phone portrait
     //Expanded Height >= 900 dp tablet portrait
 
-    Column {
-     Text(windowsSize.toString())
-     Text(height.toString())
-     Text(width.toString())
+    val arrayPosts = arrayOf(
+        PostCardModel(1,"title1","text", R.drawable.amogus),
+        PostCardModel(2,"title1","text2", R.drawable.amogus),
+        PostCardModel(3,"title1","text3", R.drawable.amogus),
+        PostCardModel(4,"title1","text4", R.drawable.amogus),
+        PostCardModel(5,"title1","text4", R.drawable.amogus),
+        PostCardModel(6,"title1","text4", R.drawable.amogus),
+        PostCardModel(7,"title1","text4", R.drawable.amogus),
+        PostCardModel(8,"title1","text4", R.drawable.amogus),
+        PostCardModel(9,"title1","text4", R.drawable.amogus),
+    )
+    if(width == WindowWidthSizeClass.COMPACT){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(arrayPosts){ item ->
+                PostCardComponent(item.id, item.title, item.text, item.image)
+            }
+        }
+    } else if (height == WindowHeightSizeClass.COMPACT){
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            items(arrayPosts){ item ->
+                PostCardCompactComponent(item.id, item.title, item.text, item.image)
+            }
+        }
+    }
 }
-}
+
 
 
 
