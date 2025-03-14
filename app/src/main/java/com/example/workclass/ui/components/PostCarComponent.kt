@@ -1,5 +1,4 @@
 package com.example.workclass.ui.components
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -55,6 +54,7 @@ fun PostCardComponent(id:Int,title:String,text:String, image:Int){
         )
     }
 }
+
 @Composable
 fun PostCardCompactComponent(id:Int,title:String,text:String, image:Int){
     Card(

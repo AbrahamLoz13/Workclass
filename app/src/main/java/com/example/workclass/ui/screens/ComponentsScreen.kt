@@ -1,9 +1,19 @@
 package com.example.workclass.ui.screens
+import android.icu.util.Calendar
+import android.widget.DatePicker
 import android.widget.Switch
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.material3.pulltorefresh.PullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -12,23 +22,35 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -36,8 +58,10 @@ import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -52,10 +76,13 @@ import androidx.compose.material3.InputChip
 import androidx.compose.material3.InputChipDefaults
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderPositions
 import androidx.compose.material3.SmallFloatingActionButton
@@ -64,11 +91,14 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberDrawerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -78,11 +108,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.window.core.layout.WindowHeightSizeClass
 import androidx.window.core.layout.WindowWidthSizeClass
@@ -91,22 +126,29 @@ import com.example.workclass.data_model.MenuModel
 import com.example.workclass.data_model.PostCardModel
 import com.example.workclass.ui.components.PostCardCompactComponent
 import com.example.workclass.ui.components.PostCardComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 @Composable
 fun ComponentsScreen(navController: NavHostController){
 
 val menuOption = arrayOf(
-    MenuModel(1,"Buttons","Buttons", Icons.Filled.ShoppingCart),
+    MenuModel(1,"Buttons","Buttons", Icons.Filled.ThumbUp),
     MenuModel(2,"Floating buttons","FloatingButtons", Icons.Filled.Build),
-    MenuModel(3,"Progress","Progress", Icons.Filled.FavoriteBorder),
-    MenuModel(4,"Chips","Chips", Icons.Filled.Notifications),
-    MenuModel(5,"Sliders","Sliders", Icons.Filled.Create),
+    MenuModel(3,"Progress","Progress", Icons.Filled.Refresh),
+    MenuModel(4,"Chips","Chips", Icons.Filled.Person),
+    MenuModel(5,"Sliders","Sliders", Icons.Filled.List),
     MenuModel(6,"Switches","Switches", Icons.Filled.Person),
-    MenuModel(7,"Badges","Badges", Icons.Filled.PlayArrow),
-    MenuModel(8,"SnackBars","SnackBars", Icons.Filled.AddCircle),
+    MenuModel(7,"Badges","Badges", Icons.Filled.ShoppingCart),
+    MenuModel(8,"SnackBars","SnackBars", Icons.Filled.Email),
     MenuModel(9,"AlertDialogs","AlertDialogs", Icons.Filled.Warning),
-    MenuModel(9,"Bars","Bars", Icons.Filled.Warning),
+    MenuModel(9,"Bars","Bars", Icons.Filled.Menu),
+    MenuModel(10,"InputFields","InputFields", Icons.Filled.AddCircle),
+    MenuModel(11,"DatePickers","DatePickers", Icons.Filled.DateRange),
+    MenuModel(12,"BottomSheets","BottomSheets", Icons.Filled.Person),
+    MenuModel(12,"SegmentedButtons","SegmentedButtons", Icons.Filled.CheckCircle),
 
 )
     var option by rememberSaveable{ mutableStateOf("")}
@@ -171,6 +213,19 @@ val menuOption = arrayOf(
                "Bars"->{
                    Bars()
                }
+               "InputFields"->{
+                   Inputfields()
+               }
+               "DatePickers"->{
+                   DatePick()
+               }
+               "BottomSheets"->{
+                   bottomSheets()
+               }
+               "SegmentedButtons"->{
+                   SegmentedButton()
+               }
+
 
            }
        }
@@ -230,7 +285,6 @@ fun FloatingButtons() {
         }
     }
 }
-
 @Preview(showBackground = true)
 @Composable
 fun Progress() {
@@ -389,7 +443,6 @@ fun Switches(){
 @Composable
 fun Badges() {
     // This function displays Badges.
-
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -438,7 +491,6 @@ snackScope.launch { snackState.showSnackbar("The message has been send") }
         }
     }
     }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlertDialogs() {
@@ -489,82 +541,90 @@ fun AlertDialogs() {
     }
 }
 @Preview(showBackground = true)
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun Bars(){
-    Column(
-        modifier = Modifier.fillMaxSize()
+fun Bars() {
+    // Estado de la recarga
+    var isRefreshing by remember { mutableStateOf(false) }
+
+    // Estado del PullRefresh
+    val refreshState = rememberPullRefreshState(
+        refreshing = isRefreshing,
+        onRefresh = {
+            isRefreshing = true
+            // Simular una carga de datos
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(2000) // Simula una carga de datos
+                isRefreshing = false
+            }
+        }
     )
-    {
-        TopAppBar(
-            colors = TopAppBarDefaults.topAppBarColors(titleContentColor = Color.White,
-                containerColor = Color.Black),
-            title = { Text("Screen title") },
-            actions = {
-                IconButton(onClick = {}) {
-                    Icon(imageVector = Icons.Filled.Search, contentDescription="")
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pullRefresh(refreshState)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Barra superior
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    titleContentColor = Color.White,
+                    containerColor = Color.Black
+                ),
+                title = { Text("Screen title") },
+                actions = {
+                    IconButton(onClick = {}) {
+                        Icon(imageVector = Icons.Filled.Search, contentDescription = "")
+                    }
+                    IconButton(onClick = {}) {
+                        Icon(imageVector = Icons.Filled.Settings, contentDescription = "")
+                    }
                 }
-                IconButton(onClick = {}) {
-                    Icon(imageVector = Icons.Filled.Settings, contentDescription="")
-                }
+            )
+
+            // Contenido dentro del Pull to Refresh
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxSize()
+            ) {
+                Adaptive()
             }
 
-        )
-        /*
-        val arrayPosts = arrayOf(
-            PostCardModel(1,"t","t", R.drawable.amogus),
-            PostCardModel(2,"t","t3", R.drawable.amogus),
-            PostCardModel(3,"t","t33", R.drawable.amogus),
-            PostCardModel(4,"t","t33", R.drawable.amogus),
-            PostCardModel(5,"t","t33", R.drawable.amogus),
-            PostCardModel(6,"t","t33", R.drawable.amogus),
-        )
-
-        LazyRow(
-            modifier = Modifier.fillMaxSize().weight(1f)
-        ) { items(arrayPosts){item -> PostCardComponent(item.id,item.title,item.text,item.image) } }
-           */
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxSize()
-        ) {
-      Adaptive()
-        }
-
-        BottomAppBar(
+            // Barra inferior
+            BottomAppBar(
                 containerColor = Color.DarkGray,
                 contentColor = Color.White
             ) {
-                IconButton(modifier = Modifier.weight(1f),
-                    onClick = {},
-                    )
-                {
+                IconButton(modifier = Modifier.weight(1f), onClick = {}) {
                     Icon(imageVector = Icons.Filled.Warning, contentDescription = "")
                 }
-                IconButton(modifier = Modifier.weight(1f),onClick = {},
-                )
-                {
+                IconButton(modifier = Modifier.weight(1f), onClick = {}) {
                     Icon(imageVector = Icons.Filled.Settings, contentDescription = "")
                 }
-                IconButton(modifier = Modifier.weight(1f),onClick = {},
-                )
-                {
+                IconButton(modifier = Modifier.weight(1f), onClick = {}) {
                     Icon(imageVector = Icons.Filled.Home, contentDescription = "")
                 }
-                IconButton(modifier = Modifier.weight(1f),onClick = {},
-                )
-                {
-                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Person, contentDescription = "")
+                IconButton(modifier = Modifier.weight(1f), onClick = {}) {
+                    Icon(imageVector = Icons.Filled.Person, contentDescription = "")
                 }
-                IconButton(onClick = {},
-                )
-                {
-                    Icon(modifier = Modifier.weight(1f),imageVector = Icons.Filled.Create, contentDescription = "")
+                IconButton(modifier = Modifier.weight(1f), onClick = {}) {
+                    Icon(imageVector = Icons.Filled.Create, contentDescription = "")
                 }
             }
         }
+
+        // Indicador de recarga
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = refreshState,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
     }
+}
+
 @Composable
 fun Adaptive(){
     var windowsSize =currentWindowAdaptiveInfo().windowSizeClass
@@ -580,14 +640,14 @@ fun Adaptive(){
 
     val arrayPosts = arrayOf(
         PostCardModel(1,"title1","text", R.drawable.amogus),
-        PostCardModel(2,"title1","text2", R.drawable.amogus),
-        PostCardModel(3,"title1","text3", R.drawable.amogus),
-        PostCardModel(4,"title1","text4", R.drawable.amogus),
-        PostCardModel(5,"title1","text4", R.drawable.amogus),
-        PostCardModel(6,"title1","text4", R.drawable.amogus),
-        PostCardModel(7,"title1","text4", R.drawable.amogus),
-        PostCardModel(8,"title1","text4", R.drawable.amogus),
-        PostCardModel(9,"title1","text4", R.drawable.amogus),
+        PostCardModel(2,"title2","text 2", R.drawable.amogus),
+        PostCardModel(3,"title3","text 3", R.drawable.amogus),
+        PostCardModel(4,"title4","text 4", R.drawable.amogus),
+        PostCardModel(5,"title5","text 5", R.drawable.amogus),
+        PostCardModel(6,"title6","text 6", R.drawable.amogus),
+        PostCardModel(7,"title7","text 7", R.drawable.amogus),
+        PostCardModel(8,"title8","text 8", R.drawable.amogus),
+        PostCardModel(9,"title9","text 9", R.drawable.amogus),
     )
     if(width == WindowWidthSizeClass.COMPACT){
         LazyColumn(
@@ -609,8 +669,145 @@ fun Adaptive(){
         }
     }
 }
+@Preview(showBackground = true)
+@Composable
+fun Inputfields(){
+    var text by remember { mutableStateOf("") }
 
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text("Ingrese texto") },
+        modifier = Modifier.fillMaxWidth().padding(16.dp),
 
+    )
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DatePick() {
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
 
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
 
+    var selectedDate by remember { mutableStateOf("") }
 
+    val datePickerDialog = android.app.DatePickerDialog(
+        context,
+        { _: DatePicker, y: Int, m: Int, d: Int ->
+            selectedDate = "$d/${m + 1}/$y"
+        },
+        year, month, day
+    )
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = if (selectedDate.isNotEmpty()) "Fecha seleccionada: $selectedDate" else "No hay fecha seleccionada",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(8.dp)
+        )
+
+        Button(onClick = { datePickerDialog.show() }) {
+            Text("Seleccionar Fecha")
+        }
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun bottomSheets(){
+    val sheetState = rememberModalBottomSheetState()
+    val showSheet = remember { mutableStateOf(false) }
+
+    // Pantalla principal con botón para abrir el Bottom Sheet
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(onClick = { showSheet.value = true }) {
+            Text("Abrir Bottom Sheet")
+        }
+    }
+
+    // Modal Bottom Sheet
+    if (showSheet.value) {
+        ModalBottomSheet(
+            onDismissRequest = { showSheet.value = false },
+            sheetState = sheetState
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Hola buenas tardes", style = MaterialTheme.typography.bodyLarge)
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(onClick = { showSheet.value = false }) {
+                    Text("Cerrar")
+                }
+            }
+        }
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun SegmentedButton() {
+    var selectedSegment by remember { mutableStateOf(0) }
+    val options = listOf("Opción 1", "Opción 2", "Opción 3")
+    val images = listOf(
+        painterResource(id = R.drawable.img_1),
+        painterResource(id = R.drawable.amogus),
+        painterResource(id = R.drawable.gato)
+    )
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally)
+        ) {
+            options.forEachIndexed { index, option ->
+                Button(
+                    onClick = { selectedSegment = index },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedSegment == index) Color.DarkGray else Color.LightGray
+                    ),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(option, color = Color.White, fontSize = 16.sp)
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Image(
+            painter = images[selectedSegment],
+            contentDescription = "Imagen de ${options[selectedSegment]}",
+            modifier = Modifier
+                .size(200.dp)
+                .clip(RoundedCornerShape(16.dp))
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(
+            text = "Seleccionaste: ${options[selectedSegment]}",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
+    }
+}
