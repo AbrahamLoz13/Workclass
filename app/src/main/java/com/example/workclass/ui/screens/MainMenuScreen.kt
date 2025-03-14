@@ -28,6 +28,10 @@ fun MainMenuScreen(navController: NavHostController){
         ) {
             Text("GO TO INSTAGRAM CLONE")
         }
+        Button(onClick = {navController.navigate("Components_Screen")}
+        ) {
+            Text("GO TO COMPONENTS SCREEN")
+        }
     }
 }
 

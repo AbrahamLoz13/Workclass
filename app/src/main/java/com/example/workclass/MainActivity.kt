@@ -38,6 +38,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.workclass.ui.screens.ComponentsScreen
 import com.example.workclass.ui.screens.HomeScreen
 import com.example.workclass.ui.screens.MainMenuScreen
 import com.example.workclass.ui.screens.TestScreen
@@ -68,6 +69,7 @@ class MainActivity : ComponentActivity() {
             composable("Home_Screen") { HomeScreen(navController) }
             composable("Test_Screen") { TestScreen(navController) }
             composable("Instagram_Screen") { com.example.workclass.ui.screens.InstagramHome(navController) }
+            composable("Components_Screen") { ComponentsScreen(navController) }
         }
     }
 }
