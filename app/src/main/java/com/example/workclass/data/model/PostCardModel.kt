@@ -1,6 +1,4 @@
-package com.example.workclass.data_model
-
-import android.icu.text.CaseMap.Title
+package com.example.workclass.data.model
 
 data class PostCardModel(
     val id:Int,

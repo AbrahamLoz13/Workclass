@@ -40,6 +40,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.workclass.ui.screens.ComponentsScreen
 import com.example.workclass.ui.screens.HomeScreen
+import com.example.workclass.ui.screens.LoginScreen
 import com.example.workclass.ui.screens.MainMenuScreen
 import com.example.workclass.ui.screens.TestScreen
 import com.example.workclass.ui.theme.Pink80
@@ -70,6 +71,7 @@ class MainActivity : ComponentActivity() {
             composable("Test_Screen") { TestScreen(navController) }
             composable("Instagram_Screen") { com.example.workclass.ui.screens.InstagramHome(navController) }
             composable("Components_Screen") { ComponentsScreen(navController) }
+            composable("Login_screen") { LoginScreen(navController) }
         }
     }
 }
