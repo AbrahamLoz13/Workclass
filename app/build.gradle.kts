@@ -40,6 +40,15 @@ android {
     buildFeatures {
         compose = true
     }
+    packagingOptions {
+        resources {
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/INDEX.LIST",
+                "META-INF/io.netty.versions.properties"
+            )
+        }
+    }
 
 }
 
@@ -60,6 +69,7 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.compose.material:material:1.6.0")
     implementation(libs.firebase.appdistribution.gradle)
+    implementation(libs.androidx.media3.common.ktx)
 
     // Dependencias para pruebas
     testImplementation(libs.junit)

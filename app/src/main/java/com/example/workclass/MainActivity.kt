@@ -38,10 +38,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.workclass.ui.screens.AccountScreen
 import com.example.workclass.ui.screens.ComponentsScreen
 import com.example.workclass.ui.screens.HomeScreen
 import com.example.workclass.ui.screens.LoginScreen
 import com.example.workclass.ui.screens.MainMenuScreen
+import com.example.workclass.ui.screens.ManageAccountScreen
 import com.example.workclass.ui.screens.TestScreen
 import com.example.workclass.ui.theme.Pink80
 import com.example.workclass.ui.theme.WorkclassTheme
@@ -72,6 +74,9 @@ class MainActivity : ComponentActivity() {
             composable("Instagram_Screen") { com.example.workclass.ui.screens.InstagramHome(navController) }
             composable("Components_Screen") { ComponentsScreen(navController) }
             composable("Login_screen") { LoginScreen(navController) }
+            composable("accounts_screen") { AccountScreen(navController) }
+            composable("manage_account_screen") { ManageAccountScreen(navController) }
+
         }
     }
 }
