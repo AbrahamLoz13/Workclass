@@ -30,8 +30,6 @@ Column(modifier = Modifier
     .padding(10.dp)
     .fillMaxSize()
 ) {
-
-
     TopBarComponent("Add account", navController, "manage_account_screen")
     OutlinedTextField(modifier = Modifier
         .fillMaxWidth(),
@@ -70,5 +68,5 @@ Column(modifier = Modifier
     ){
         Text("Save account")
     }
-}
+  }
 }

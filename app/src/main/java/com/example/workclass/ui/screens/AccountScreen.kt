@@ -27,14 +27,19 @@ import com.example.workclass.ui.components.TopBarComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AccountScreen(navController: NavController, viewModel: AccountViewModel = viewModel()) {
+fun AccountScreen(
+    navController: NavController,
+    viewModel: AccountViewModel = viewModel()
+) {
     var accounts by remember { mutableStateOf<List<AccountModel>>(emptyList()) }
-    var showButtonSheet by remember { mutableStateOf(false) }
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    var showBottomSheet by remember { mutableStateOf(false) }
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = false
+    )
     var accountDetail by remember { mutableStateOf<AccountModel?>(null) }
 
     Column {
-        TopBarComponent("Accounts", navController, "accounts_screen")
+        TopBarComponent("Accounts",navController, "accounts_screen")
 
         LaunchedEffect(Unit) {
             viewModel.getAccounts { response ->
@@ -45,10 +50,11 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = vi
                 }
             }
         }
-
         val listState = rememberLazyListState()
+
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize(),
             state = listState
         ) {
             items(accounts) { account ->
@@ -56,24 +62,26 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = vi
                     account.id,
                     account.name,
                     account.username,
-                    account.imageURL,
-
-                ) {
-                    viewModel.getAccount(account.id) { response ->
-                        if (response.isSuccessful) {
-                            accountDetail = response.body()
+                    account.imageURL.toString(),
+                    onButtonClick = {
+                        viewModel.getAccount(account.id){ response ->
+                            if (response.isSuccessful){
+                                accountDetail = response.body()
+                            }
                         }
+                        showBottomSheet = true
                     }
-                    showButtonSheet = true
-                }
+                )
             }
         }
     }
-
-    if (showButtonSheet) {
+    if (showBottomSheet){
         ModalBottomSheet(
-            modifier = Modifier.fillMaxHeight(),
-            onDismissRequest = { showButtonSheet = false },
+            modifier = Modifier
+                .fillMaxHeight(),
+            onDismissRequest = {
+                showBottomSheet = false
+            },
             sheetState = sheetState
         ) {
             AccountDetailCardComponent(
@@ -82,8 +90,9 @@ fun AccountScreen(navController: NavController, viewModel: AccountViewModel = vi
                 accountDetail?.username ?: "",
                 accountDetail?.password ?: "",
                 accountDetail?.imageURL ?: "",
-                accountDetail?.description ?: ""
-            )
+                accountDetail?.description ?: "",
+
+                )
         }
     }
 }

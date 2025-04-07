@@ -1,7 +1,10 @@
+// build.gradle (nivel de módulo app)
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -40,6 +43,7 @@ android {
     buildFeatures {
         compose = true
     }
+
     packagingOptions {
         resources {
             excludes += setOf(
@@ -49,11 +53,10 @@ android {
             )
         }
     }
-
 }
 
 dependencies {
-    // Dependencias principales de AndroidX
+    // Compose y UI
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -64,14 +67,12 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.adaptive.android)
-
-    // Dependencia para SwipeRefresh
     implementation("androidx.compose.material3:material3:1.2.0")
     implementation("androidx.compose.material:material:1.6.0")
     implementation(libs.firebase.appdistribution.gradle)
     implementation(libs.androidx.media3.common.ktx)
 
-    // Dependencias para pruebas
+    // Pruebas
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -80,16 +81,21 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Coil para AsyncImage
+    // Coil para imágenes
     implementation(libs.coil.compose)
 
-    // Retrofit
+    // Retrofit y JSON
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.converter.gson)
 
-    // AndroidX Lifecycle
+    // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx.v262)
+
+    // ✅ Room
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+
 }
