@@ -1,7 +1,7 @@
 package com.example.workclass.data.database
 
-import androidx.room.Database
 
+import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.workclass.data.dao.AccountDao
 import com.example.workclass.data.model.AccountEntity

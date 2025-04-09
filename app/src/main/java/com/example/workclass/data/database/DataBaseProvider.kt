@@ -1,11 +1,21 @@
 package com.example.workclass.data.database
 
-import androidx.room.Database
-import androidx.room.RoomDatabase
-import com.example.workclass.data.dao.AccountDao
-import com.example.workclass.data.model.AccountEntity
 
-@Database(entities = [AccountEntity::class], version = 1)
-abstract class AppDatabase:RoomDatabase(){
-    abstract fun accountDao(): AccountDao
+import android.content.Context
+import androidx.room.Room
+
+object DatabaseProvider{
+    private var instance:AppDataBase? = null
+
+    fun getDatabase(context: Context):AppDataBase{
+        return instance ?: synchronized(this){
+            val db = Room.databaseBuilder(
+                context.applicationContext,
+                AppDataBase::class.java,
+                "app-db"
+            ).build()
+            instance = db
+            db
+        }
+    }
 }

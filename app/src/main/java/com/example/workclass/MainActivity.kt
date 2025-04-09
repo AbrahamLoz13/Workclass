@@ -1,5 +1,6 @@
 package com.example.workclass
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -38,7 +39,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.workclass.ui.screens.AccountScreen
+import com.example.workclass.data.database.AppDataBase
+import com.example.workclass.data.database.DatabaseProvider
+import com.example.workclass.ui.screens.AccountsScreen
 import com.example.workclass.ui.screens.ComponentsScreen
 import com.example.workclass.ui.screens.HomeScreen
 import com.example.workclass.ui.screens.LoginScreen
@@ -48,9 +51,15 @@ import com.example.workclass.ui.screens.TestScreen
 import com.example.workclass.ui.theme.Pink80
 import com.example.workclass.ui.theme.WorkclassTheme
 class MainActivity : ComponentActivity() {
+    lateinit var dataBase: AppDataBase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Establece el contenido de la actividad
+        try {
+            dataBase = DatabaseProvider.getDatabase(this)
+            Log.d("debug-db","Database loaded successfully")
+        }catch (exception:Exception){
+            Log.d("debug-db","ERROR: $exception")
+        }
         setContent {
             WorkclassTheme {
                 ComposeMultiScreenApp()
@@ -74,7 +83,7 @@ class MainActivity : ComponentActivity() {
             composable("Instagram_Screen") { com.example.workclass.ui.screens.InstagramHome(navController) }
             composable("Components_Screen") { ComponentsScreen(navController) }
             composable("Login_screen") { LoginScreen(navController) }
-            composable("accounts_screen") { AccountScreen(navController) }
+            composable("accounts_screen") { AccountsScreen(navController) }
             composable("manage_account_screen") { ManageAccountScreen(navController) }
 
         }
