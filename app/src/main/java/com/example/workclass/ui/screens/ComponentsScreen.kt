@@ -639,7 +639,7 @@ fun Adaptive(){
                 .fillMaxSize()
         ) {
             items(arrayPosts){ item ->
-                PostCardComponent(item.id, item.title, item.text, item.image)
+                PostCardComponent(item.id, item.title, item.text, item.iamge)
             }
         }
     } else if (height == WindowHeightSizeClass.COMPACT){
@@ -648,7 +648,7 @@ fun Adaptive(){
                 .fillMaxSize()
         ) {
             items(arrayPosts){ item ->
-                PostCardCompactComponent(item.id, item.title, item.text, item.image)
+                PostCardCompactComponent(item.id, item.title, item.text, item.iamge)
             }
         }
     }

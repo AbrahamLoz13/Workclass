@@ -1,6 +1,10 @@
 package com.example.workclass.data.dao
 
+
+
+import android.accounts.Account
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -12,5 +16,8 @@ interface AccountDao {
     fun getAll(): List<AccountEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(account:AccountEntity)
+    fun insert(account: AccountEntity)
+
+    @Delete()
+    fun delete(account: AccountEntity)
 }

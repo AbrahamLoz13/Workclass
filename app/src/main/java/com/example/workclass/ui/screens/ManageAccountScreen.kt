@@ -1,5 +1,8 @@
 package com.example.workclass.ui.screens
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,55 +21,98 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.workclass.data.model.AccountModel
+import com.example.workclass.data.model.UserModel
 import com.example.workclass.data.viewmodel.AccountViewModel
+import com.example.workclass.data.viewmodel.UserViewModel
 import com.example.workclass.ui.components.TopBarComponent
+
 @Composable
-fun ManageAccountScreen(navController: NavController, viewModel: AccountViewModel = viewModel())
-{
+fun ManageAccountScreen(
+    navController: NavController,
+    viewModel: AccountViewModel = viewModel()
+){
+
     val account = remember { mutableStateOf(AccountModel()) }
     val context = LocalContext.current
-Column(modifier = Modifier
-    .background(MaterialTheme.colorScheme.background)
-    .padding(10.dp)
-    .fillMaxSize()
-) {
-    TopBarComponent("Add account", navController, "manage_account_screen")
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth(),
-        value = account.value.name,
-        maxLines = 1,
-        label = {"Account name" },
-        onValueChange = {account.value = account.value.copy(name = it)}
-    )
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth(),
-        value = account.value.username,
-        maxLines = 1,
-        label = {"Account username" },
-        onValueChange = {account.value = account.value.copy(username = it)}
-    )
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth(),
-        value = account.value.password,
-        maxLines = 1,
-        label = {"Account password" },
-        onValueChange = {account.value = account.value.copy(password = it)}
-    )
-    OutlinedTextField(modifier = Modifier
-        .fillMaxWidth(),
-        value = account.value.description,
-        maxLines = 1,
-        label = {"Account description" },
-        onValueChange = {account.value = account.value.copy(description = it)}
-    )
-    FilledTonalButton(modifier = Modifier
-        .fillMaxWidth()
-        .padding(0.dp, 10.dp),
-        onClick =  {
-            //..tarea on click, delete
-        }
+
+    Column (
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(10.dp)
+            .fillMaxSize()
     ){
-        Text("Save account")
+        TopBarComponent("Add account",navController,"manage_account_screen")
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = account.value.name,
+            maxLines = 1,
+            label = {"Account Name "},
+            onValueChange = {account.value = account.value.copy(name = it)}
+        )
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = account.value.username,
+            maxLines = 1,
+            label = {"Account Username "},
+            onValueChange = {account.value = account.value.copy(username = it)}
+        )
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = account.value.password,
+            maxLines = 1,
+            label = {"Account Password "},
+            onValueChange = {account.value = account.value.copy(password = it)}
+        )
+
+        OutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            value = account.value.description,
+            maxLines = 1,
+            label = {"Account Description "},
+            onValueChange = {account.value = account.value.copy(description = it)}
+        )
+        FilledTonalButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(0.dp,10.dp),
+            onClick = {
+                TryAccount(account.value.name,
+                    account.value.username,
+                    account.value.password,
+                    account.value.description,
+                    viewModel,
+                    context
+                )
+
+            }
+        ) {
+            Text("Save Account")
+        }
     }
-  }
+}
+
+fun TryAccount(name:String,username:String,password:String,description:String,viewModel: AccountViewModel, context: Context) {
+    if (name == "" || username == "" || password == "" || description == "") {
+        Toast.makeText(
+            context,
+            "Error agregue todos los datos ",
+            Toast.LENGTH_SHORT
+        ).show()
+    } else {
+        val add_Account = AccountModel(0, name, username, password, description)
+        viewModel.createAccount(add_Account) { jsonResponse ->
+            val CreateStatus = jsonResponse?.get("addAccount")?.asString
+            Log.d("debug", "LOGIN STATUS: $CreateStatus")
+            if (CreateStatus == "success") {
+                Log.d("debug", "Se creó de manera exitosa")
+            }
+        }
+    }
 }

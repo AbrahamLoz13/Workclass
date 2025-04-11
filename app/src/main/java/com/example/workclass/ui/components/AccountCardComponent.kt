@@ -32,8 +32,7 @@ fun AccountCardComponent(
     name:String,
     username:String,
     imageURL:String,
-    onButtonClick: ()->Unit
-
+    onButtonClick:()->Unit
 ){
     Card (
         modifier = Modifier
@@ -48,7 +47,7 @@ fun AccountCardComponent(
                     .height(80.dp)
                     .padding(10.dp),
                 model = imageURL,
-                error = painterResource(R.drawable.ic_launcher_foreground),
+                error = painterResource(R.drawable.amogus),
                 contentDescription = "Account Logo",
                 contentScale = ContentScale.FillBounds
             )
@@ -79,7 +78,7 @@ fun AccountCardComponent(
                 IconButton(
                     modifier = Modifier
                         .padding(20.dp,0.dp,0.dp,0.dp),
-                    onClick = { onButtonClick() }
+                    onClick = {onButtonClick()}
                 ) {
                     Icon(
                         Icons.Filled.MoreVert,
