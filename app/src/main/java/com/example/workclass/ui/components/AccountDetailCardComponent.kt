@@ -1,27 +1,18 @@
 package com.example.workclass.ui.components
 
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -33,7 +24,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.workclass.R
 
-
 @Composable
 fun AccountDetailCardComponent(
     id: Int,
@@ -43,18 +33,16 @@ fun AccountDetailCardComponent(
     imageURL: String,
     description: String,
     onSaveClick: () -> Unit,
-    onDeleteClick: (Int) -> Unit,
     navController: NavController,
+) {
+    val context = LocalContext.current
 
-    ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val context = LocalContext.current
-
         AsyncImage(
             model = imageURL,
             contentDescription = "Account Logo",
@@ -65,18 +53,20 @@ fun AccountDetailCardComponent(
                 .height(100.dp)
         )
 
-        // 🔽 Fila de botones: Guardar y Editar
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = {
                 onSaveClick()
-                Toast.makeText(context, "Guardado como favorito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Saved as favorite", Toast.LENGTH_SHORT).show()
             }) {
                 Icon(
                     imageVector = Icons.Filled.Star,
-                    contentDescription = "Save as Favorite",
+                    contentDescription = "Save as favorite",
                 )
             }
 
@@ -85,42 +75,29 @@ fun AccountDetailCardComponent(
             }) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit Account"
+                    contentDescription = "Edit account"
                 )
             }
-            IconButton(onClick = {
-                onDeleteClick(id)
-
-
-            }) {
-                Icon(
-                    imageVector = Icons.Filled.Delete,
-                    contentDescription = "Delete account",
-                )
-            }
-
-
         }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        InfoRow(title = "Account", value = name, context = context)
+        InfoRow(title = "Username", value = username, context = context)
+        InfoRow(title = "Password", value = password, context = context)
+        InfoRow(title = "Description", value = description, context = context)
     }
-
-
-
-    Spacer(modifier = Modifier.height(16.dp))
-
-    InfoRow(title = "Account", value = name)
-    InfoRow(title = "Username", value = username)
-    InfoRow(title = "Password", value = password, showIcon = true)
-    InfoRow(title = "Description", value = description)
 }
 
-
-
+fun copyToClipboard(context: Context, text: String, label: String) {
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+    val clip = ClipData.newPlainText(label, text)
+    clipboard.setPrimaryClip(clip)
+    Toast.makeText(context, "$label copied", Toast.LENGTH_SHORT).show()
+}
 
 @Composable
-fun InfoRow(title: String, value: String, showIcon: Boolean = false) {
-    val showPassword = remember { mutableStateOf(false) }
-    val isPasswordField = title.lowercase() == "password"
-
+fun InfoRow(title: String, value: String, context: Context) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -132,19 +109,17 @@ fun InfoRow(title: String, value: String, showIcon: Boolean = false) {
             modifier = Modifier.weight(1f),
             fontWeight = FontWeight.Bold
         )
-
         Text(
-            text = if (isPasswordField && !showPassword.value) "••••••" else value,
+            text = value,
             modifier = Modifier.weight(2f)
         )
-
-        if (isPasswordField) {
-            IconButton(onClick = { showPassword.value = !showPassword.value }) {
-                Icon(
-                    imageVector = if (showPassword.value) Icons.Default.Menu else Icons.Default.Menu,
-                    contentDescription = if (showPassword.value) "Ocultar" else "Mostrar"
-                )
-            }
+        IconButton(onClick = {
+            copyToClipboard(context, value, title)
+        }) {
+            Icon(
+                imageVector = Icons.Default.Share,
+                contentDescription = "Copy $title"
+            )
         }
     }
 }

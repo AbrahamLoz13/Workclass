@@ -1,4 +1,6 @@
 package com.example.workclass
+
+// Importación de librerías necesarias para la actividad y navegación
 import AccountScreen
 import FavoriteAccountScreen
 import android.os.Bundle
@@ -51,33 +53,51 @@ import com.example.workclass.ui.screens.ManageAccountScreen
 import com.example.workclass.ui.screens.TestScreen
 import com.example.workclass.ui.theme.Pink80
 import com.example.workclass.ui.theme.WorkclassTheme
+
+// Definición de la actividad principal
 class MainActivity : ComponentActivity() {
     lateinit var dataBase: AppDatabase
+
+    // Método onCreate que se ejecuta al iniciar la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Intentamos cargar la base de datos
         try {
             dataBase = DatabaseProvider.getDatabase(this)
-            Log.d("debug-db","Database loaded successfully")
-        }catch (exception:Exception){
-            Log.d("debug-db","ERROR: $exception")
+            Log.d("debug-db", "Database loaded successfully")
+        } catch (exception: Exception) {
+            // Si ocurre un error, lo mostramos en el log
+            Log.d("debug-db", "ERROR: $exception")
         }
+
+        // Establecemos el contenido de la actividad con Jetpack Compose
         setContent {
             WorkclassTheme {
                 ComposeMultiScreenApp()
             }
         }
     }
+
+    // Composable que configura la navegación entre pantallas
     @Composable
     fun ComposeMultiScreenApp() {
+        // Creamos el controlador de navegación
         val navController = rememberNavController()
+
+        // Configuramos el gráfico de navegación
         SetUpNavGraph(navController = navController)
     }
+
+    // Configuración del gráfico de navegación
     @Composable
     fun SetUpNavGraph(navController: NavHostController) {
+        // Configuramos las rutas y las pantallas de la aplicación
         NavHost(
-            navController = navController,
-            startDestination = "MainMenu_Screen"
+            navController = navController, // Controlador de navegación
+            startDestination = "MainMenu_Screen" // Pantalla inicial
         ) {
+            // Definimos las pantallas y sus rutas correspondientes
             composable("MainMenu_Screen") { MainMenuScreen(navController) }
             composable("Home_Screen") { HomeScreen(navController) }
             composable("Test_Screen") { TestScreen(navController) }
@@ -85,12 +105,15 @@ class MainActivity : ComponentActivity() {
             composable("Components_Screen") { ComponentsScreen(navController) }
             composable("Login_screen") { LoginScreen(navController) }
             composable("accounts_screen") { AccountScreen(navController) }
+
+            // Ruta dinámica para gestionar una cuenta específica por su id
             composable("manage_account_screen?id={id}") { backStackEntry ->
                 val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
                 ManageAccountScreen(navController = navController, id = id)
             }
-            composable("favorite_accounts_screen") { FavoriteAccountScreen(navController) }
 
+            // Pantalla para mostrar las cuentas favoritas
+            composable("favorite_accounts_screen") { FavoriteAccountScreen(navController) }
         }
     }
 }
