@@ -85,7 +85,10 @@ class MainActivity : ComponentActivity() {
             composable("Components_Screen") { ComponentsScreen(navController) }
             composable("Login_screen") { LoginScreen(navController) }
             composable("accounts_screen") { AccountScreen(navController) }
-            composable("manage_account_screen") { ManageAccountScreen(navController) }
+            composable("manage_account_screen?id={id}") { backStackEntry ->
+                val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+                ManageAccountScreen(navController = navController, id = id)
+            }
             composable("favorite_accounts_screen") { FavoriteAccountScreen(navController) }
 
         }

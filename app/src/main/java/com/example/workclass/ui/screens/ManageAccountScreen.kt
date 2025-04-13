@@ -1,5 +1,4 @@
 package com.example.workclass.ui.screens
-
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -13,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -29,11 +29,27 @@ import com.example.workclass.ui.components.TopBarComponent
 @Composable
 fun ManageAccountScreen(
     navController: NavController,
+    id: Int? = null,
     viewModel: AccountViewModel = viewModel()
 ){
 
     val account = remember { mutableStateOf(AccountModel()) }
     val context = LocalContext.current
+
+    LaunchedEffect(id) {
+        if (id != null) {
+            viewModel.getAccount(id) { response ->
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        account.value = it
+                    }
+                } else {
+                    Log.d("debug", "Error al obtener cuenta")
+                }
+            }
+        }
+    }
+
 
     Column (
         modifier = Modifier
@@ -83,18 +99,28 @@ fun ManageAccountScreen(
                 .fillMaxWidth()
                 .padding(0.dp,10.dp),
             onClick = {
-                TryAccount(account.value.name,
-                    account.value.username,
-                    account.value.password,
-                    account.value.description,
-                    viewModel,
-                    context
-                )
+                if (id == null) {
+                    // Crear
+                    TryAccount(
+                        account.value.name,
+                        account.value.username,
+                        account.value.password,
+                        account.value.description,
+                        viewModel,
+                        context,
 
+                        )
+                } else {
+                    // Actualizar
+                    viewModel.updateAccount(id, account.value) { response ->
+                        Toast.makeText(context, "Cuenta actualizada correctamente", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         ) {
-            Text("Save Account")
+            Text(if (id == null) "Guardar cuenta" else "Actualizar cuenta")
         }
+
     }
 }
 
@@ -109,10 +135,11 @@ fun TryAccount(name:String,username:String,password:String,description:String,vi
         val add_Account = AccountModel(0, name, username, password, description)
         viewModel.createAccount(add_Account) { jsonResponse ->
             val CreateStatus = jsonResponse?.get("addAccount")?.asString
-            Log.d("debug", "LOGIN STATUS: $CreateStatus")
-            if (CreateStatus == "success") {
-                Log.d("debug", "Se creó de manera exitosa")
-            }
+            Toast.makeText(
+                context,
+                "Se agrego la cuenta de forma exitosa",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }

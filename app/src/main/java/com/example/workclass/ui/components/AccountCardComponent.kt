@@ -1,4 +1,5 @@
 package com.example.workclass.ui.components
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,7 +26,6 @@ import coil.compose.AsyncImage
 import com.example.workclass.R
 
 
-//@Preview  (showBackground = true)
 @Composable
 fun AccountCardComponent(
     id:Int,

@@ -37,20 +37,57 @@ class AccountViewModel: ViewModel() {
         }
 
     }
-    fun createAccount(service:AccountModel, onResult:(JsonObject?)->Unit){
+    fun createAccount(service: AccountModel, onResult:(JsonObject?) -> Unit){
         viewModelScope.launch {
             try {
                 val response = api.addAccount(service)
-                if(response.isSuccessful){
+                if (response.isSuccessful){
                     val jsonResponse = response.body()
-                    Log.d("debug", "${response.body()}")
+                    Log.d("debug","MSG: ${response.body()}")
                     onResult(jsonResponse)
-                } else {
-                    Log.d("debug", "Error: ${response.body()}")
+                } else{
+                    Log.d("debug","ERROR: ${response.body()}")
                     onResult(null)
                 }
-            } catch (exception: Exception){
-                Log.d("debug", "API CALL FAILED: $exception")
+            }catch (exception: Exception){
+                Log.d("debug","API CALL FAILED: $exception")
+                onResult(null)
+            }
+        }
+    }
+    fun updateAccount(id: Int, account: AccountModel, onResult:(JsonObject?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = api.updateAccount(id, account)
+                if (response.isSuccessful){
+                    val jsonResponse = response.body()
+                    Log.d("debug","MSG: ${response.body()}")
+                    onResult(jsonResponse)
+                } else{
+                    Log.d("debug","ERROR: ${response.body()}")
+                    onResult(null)
+                }
+            }catch (exception: Exception){
+                Log.d("debug","API CALL FAILED: $exception")
+                onResult(null)
+            }
+        }
+    }
+
+    fun deleteAccount(id: Int, onResult:(JsonObject?) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = api.deleteAccount(id)
+                if (response.isSuccessful){
+                    val jsonResponse = response.body()
+                    Log.d("debug","MSG: ${response.body()}")
+                    onResult(jsonResponse)
+                } else{
+                    Log.d("debug","ERROR: ${response.body()}")
+                    onResult(null)
+                }
+            }catch (exception: Exception){
+                Log.d("debug","API CALL FAILED: $exception")
                 onResult(null)
             }
         }

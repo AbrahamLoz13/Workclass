@@ -1,4 +1,6 @@
 package com.example.workclass.ui.components
+
+import android.icu.text.CaseMap.Title
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -21,17 +23,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.workclass.R
+
+
 @Composable
-fun PostCardComponent(id:Int,title:String,text:String, image:Int){
-    Card(
+fun PostCardComponent (id:Int,title:String,text:String,image:Int){
+    Card (
         modifier = Modifier
-            .background(Color.Cyan)
+            .background(Color.LightGray)
             .fillMaxWidth()
             .padding(5.dp)
     ){
-
         Text(
-            text = "This is a title",
+            text = title,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier
@@ -39,39 +42,43 @@ fun PostCardComponent(id:Int,title:String,text:String, image:Int){
         )
         Image(
             modifier = Modifier
-                .width(80.dp)
-                .height(100.dp),
+                .fillMaxWidth()
+                .height(200.dp),
             painter = painterResource(image),
-            contentDescription = "Amongus",
+            contentDescription = "Android Logo",
             contentScale = ContentScale.Crop
+
         )
         Text(
-            text= text,
+            text = text,
             textAlign = TextAlign.Justify,
-            lineHeight = 18.sp,
+            lineHeight = 10.sp,
             modifier = Modifier.padding(10.dp)
         )
     }
 }
 
 @Composable
-fun PostCardCompactComponent(id:Int,title:String,text:String, image:Int){
-    Card(
+fun PostCardCompactComponent(id:Int,title:String,text:String,image:Int){
+    Card (
         modifier = Modifier
-            .background(Color.Cyan)
+            .background(Color.LightGray)
             .fillMaxWidth()
             .padding(5.dp)
     ){
         Row (){
+
             Image(
                 modifier = Modifier
                     .width(80.dp)
                     .height(100.dp),
                 painter = painterResource(image),
-                contentDescription = "Amongus",
+                contentDescription = "Android Logo",
                 contentScale = ContentScale.Crop
             )
-            Column() {
+            Column (
+
+            ){
                 Text(
                     text = title,
                     fontSize = 12.sp,
@@ -85,6 +92,8 @@ fun PostCardCompactComponent(id:Int,title:String,text:String, image:Int){
                     lineHeight = 14.sp,
                     fontSize = 10.sp,
                     modifier = Modifier.padding(10.dp)
+
+
                 )
             }
         }

@@ -1,4 +1,5 @@
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,6 +48,7 @@ fun AccountScreen(
     val db: AppDatabase = DatabaseProvider.getDatabase(LocalContext.current)
     val accountDao = db.accountDao()
 
+    val context = LocalContext.current
 
     Column {
         TopBarComponent("Accounts",navController, "accounts_screen")
@@ -101,6 +103,7 @@ fun AccountScreen(
                 accountDetail?.password ?: "",
                 accountDetail?.imageURL ?: "",
                 accountDetail?.description ?: "",
+                navController = navController,
                 onSaveClick = {
                     CoroutineScope(Dispatchers.IO).launch { //Para conectarnos con la base de datos interna y realizar operaciones
                         try {
@@ -110,9 +113,21 @@ fun AccountScreen(
                             Log.d("debug-db","Error: $exception")
                         }
                     }
-                }
+                },
+                onDeleteClick = { id ->
+                    viewModel.deleteAccount(id) { response ->
+                        if (response != null) {
+                            Log.d("debug-delete", "Cuenta con ID $id eliminada correctamente")
+                            Toast.makeText(context, "Cuenta eliminada", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Log.d("debug-delete", "Error al eliminar la cuenta con ID $id")
+                            Toast.makeText(context, "Error al eliminar", Toast.LENGTH_SHORT).show()
+                        }
+                    }
 
+                }
             )
+
         }
     }
 }
