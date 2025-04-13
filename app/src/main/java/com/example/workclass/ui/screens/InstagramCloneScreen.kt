@@ -35,7 +35,6 @@ fun DarkTheme(content: @Composable () -> Unit) {
         content = content
     )
 }
-
 data class User(val name: String, val profilePic: Int, val postImage: Int)
 val users = listOf(
     User("AbrahamLozano", R.drawable.img, R.drawable.tamales),
@@ -211,6 +210,7 @@ fun InstagramPost(user: User) {
         )
     }
 }
+
 @Preview
 @Composable
 fun InstagramPreview() {
