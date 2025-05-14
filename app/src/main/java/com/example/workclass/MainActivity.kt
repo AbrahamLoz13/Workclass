@@ -50,6 +50,7 @@ import com.example.workclass.ui.screens.HomeScreen
 import com.example.workclass.ui.screens.LoginScreen
 import com.example.workclass.ui.screens.MainMenuScreen
 import com.example.workclass.ui.screens.ManageAccountScreen
+import com.example.workclass.ui.screens.ReporteFotoApp
 import com.example.workclass.ui.screens.TestScreen
 import com.example.workclass.ui.theme.Pink80
 import com.example.workclass.ui.theme.WorkclassTheme
@@ -105,6 +106,8 @@ class MainActivity : ComponentActivity() {
             composable("Components_Screen") { ComponentsScreen(navController) }
             composable("Login_screen") { LoginScreen(navController) }
             composable("accounts_screen") { AccountScreen(navController) }
+            composable("camara") { ReporteFotoApp(navController) }
+
 
             // Ruta dinámica para gestionar una cuenta específica por su id
             composable("manage_account_screen?id={id}") { backStackEntry ->

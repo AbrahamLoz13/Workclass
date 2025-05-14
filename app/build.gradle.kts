@@ -83,7 +83,16 @@ dependencies {
 
     // Coil para imágenes
     implementation(libs.coil.compose)
-
+    //camera
+    val cameraxVersion = "1.3.1"
+    implementation(libs.androidx.camera.core) // Lógica base
+    implementation(libs.androidx.camera.camera2)// Conexión con la API Camera2
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view) // Necesario para la prewiew
+    implementation(libs.androidx.navigation.compose.v277)
+    implementation (libs.accompanist.permissions)
+    implementation(libs.androidx.camera.video)
+    implementation (libs.coil.compose.v222)
     // Retrofit y JSON
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.retrofit)
@@ -96,7 +105,7 @@ dependencies {
 
     // ✅ Room
     val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
+    implementation(libs.androidx.room.runtime)
     implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
 }
