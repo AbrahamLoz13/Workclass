@@ -54,7 +54,6 @@ android {
         }
     }
 }
-
 dependencies {
     // Compose y UI
     implementation(libs.androidx.core.ktx)
@@ -83,16 +82,18 @@ dependencies {
 
     // Coil para imágenes
     implementation(libs.coil.compose)
-    //camera
+
+    // CameraX
     val cameraxVersion = "1.3.1"
-    implementation(libs.androidx.camera.core) // Lógica base
-    implementation(libs.androidx.camera.camera2)// Conexión con la API Camera2
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.camera2)
     implementation(libs.androidx.camera.lifecycle)
-    implementation(libs.androidx.camera.view) // Necesario para la prewiew
+    implementation(libs.androidx.camera.view)
     implementation(libs.androidx.navigation.compose.v277)
-    implementation (libs.accompanist.permissions)
+    implementation(libs.accompanist.permissions)
     implementation(libs.androidx.camera.video)
-    implementation (libs.coil.compose.v222)
+    implementation(libs.coil.compose.v222)
+
     // Retrofit y JSON
     implementation(libs.retrofit2.kotlinx.serialization.converter)
     implementation(libs.retrofit)
@@ -100,10 +101,20 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.converter.gson)
 
+    // ✅ WorkManager (tareas en segundo plano)
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation (libs.androidx.work.runtime)
+
+    implementation (libs.androidx.biometric)
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    // ✅ Core KTX para notificaciones
+    implementation("androidx.core:core-ktx:1.12.0")
+
     // Lifecycle
     implementation(libs.androidx.lifecycle.runtime.ktx.v262)
-
-    // ✅ Room
+    // Room
     val room_version = "2.6.1"
     implementation(libs.androidx.room.runtime)
     implementation("androidx.room:room-ktx:$room_version")
