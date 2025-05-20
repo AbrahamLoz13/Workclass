@@ -2,9 +2,11 @@ package com.example.workclass
 
 // Importación de librerías necesarias para la actividad y navegación
 import AccountScreen
+import BiometricScreen
 import FavoriteAccountScreen
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -30,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -50,27 +54,27 @@ import com.example.workclass.ui.screens.HomeScreen
 import com.example.workclass.ui.screens.LoginScreen
 import com.example.workclass.ui.screens.MainMenuScreen
 import com.example.workclass.ui.screens.ManageAccountScreen
+import com.example.workclass.ui.screens.NotificationScreen
+import com.example.workclass.ui.screens.ReporteFotoApp
 import com.example.workclass.ui.screens.TestScreen
 import com.example.workclass.ui.theme.Pink80
 import com.example.workclass.ui.theme.WorkclassTheme
 
 // Definición de la actividad principal
-class MainActivity : ComponentActivity() {
-    lateinit var dataBase: AppDatabase
+class MainActivity : FragmentActivity() {
+    lateinit var database: AppDatabase
 
-    // Método onCreate que se ejecuta al iniciar la actividad
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Intentamos cargar la base de datos
         try {
-            dataBase = DatabaseProvider.getDatabase(this)
+            database = DatabaseProvider.getDatabase(this)
             Log.d("debug-db", "Database loaded successfully")
         } catch (exception: Exception) {
-            // Si ocurre un error, lo mostramos en el log
             Log.d("debug-db", "ERROR: $exception")
         }
 
+        enableEdgeToEdge()
         // Establecemos el contenido de la actividad con Jetpack Compose
         setContent {
             WorkclassTheme {
@@ -97,6 +101,13 @@ class MainActivity : ComponentActivity() {
             navController = navController, // Controlador de navegación
             startDestination = "MainMenu_Screen" // Pantalla inicial
         ) {
+            composable("biometric_screen"){
+                val context = LocalContext.current
+                BiometricScreen(navController, onAuthSuccess = {
+                    Toast.makeText(context,"Auth exitosa", Toast.LENGTH_SHORT).show()
+
+                })
+            }
             // Definimos las pantallas y sus rutas correspondientes
             composable("MainMenu_Screen") { MainMenuScreen(navController) }
             composable("Home_Screen") { HomeScreen(navController) }
@@ -105,6 +116,10 @@ class MainActivity : ComponentActivity() {
             composable("Components_Screen") { ComponentsScreen(navController) }
             composable("Login_screen") { LoginScreen(navController) }
             composable("accounts_screen") { AccountScreen(navController) }
+            composable("camara") { ReporteFotoApp(navController) }
+            composable("pantalla") { NotificationScreen(navController) }
+            //PantallaNotificaciones
+
 
             // Ruta dinámica para gestionar una cuenta específica por su id
             composable("manage_account_screen?id={id}") { backStackEntry ->
@@ -114,6 +129,8 @@ class MainActivity : ComponentActivity() {
 
             // Pantalla para mostrar las cuentas favoritas
             composable("favorite_accounts_screen") { FavoriteAccountScreen(navController) }
+
         }
+
     }
 }

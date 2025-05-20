@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.workclass.data.model.UserModel
 import com.example.workclass.data.viewmodel.UserViewModel
-
 @Composable
 fun LoginScreen(navController: NavController) {
     Column(
@@ -32,7 +31,9 @@ fun LoginScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
+
         LoginForm(navController)
+
     }
 }
 
@@ -146,6 +147,7 @@ fun TryLogin(
             "User or Password cannot be empty",
             Toast.LENGTH_SHORT
         ).show()
+
     } else {
         val user_Model = UserModel(0, "", user, password)
         viewModel.loginApi(user_Model) { jsonResponse ->

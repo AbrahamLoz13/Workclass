@@ -8,7 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     // URL base de la API a la que se hará la solicitud.
-    private const val BASE_URL = "https://fakeapi.rickbit.net/fakeapi/public/api/"
+    private const val BASE_URL = "https://fakeapi.rickbit.com/api/"
+    //https://fakeapi.rickbit.net/fakeapi/public/api/
 
     // Instancia de la API que se utilizará para realizar las peticiones.
     // La instancia se crea solo cuando se necesita gracias a 'lazy' para optimizar el rendimiento.
